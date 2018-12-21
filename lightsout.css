@@ -1,0 +1,29 @@
+h1 {
+	color: white;
+}
+
+h2 {
+	color: white;
+}
+
+body {
+	background-color: #2A2A2A;
+}
+
+.b {
+	color: black;
+	background-color: #d6c755;
+	margin: 7px;
+	width: 100px;
+	height: 100px;
+}
+
+.buttons {
+	width: 400px;
+}
+
+.reset {
+	color: white;
+	background-color: grey;
+	margin: 700px;
+}
