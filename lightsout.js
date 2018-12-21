@@ -2,22 +2,38 @@
 
 window.onload = function() {
 	var N = 3;
+	var moves = 0;
+	var lit = "#d6c755";
+	var unlit = "#545659";
 
 	var reset = document.getElementById("reset");
 	reset.addEventListener("click", function() {
 		document.getElementById("h2").textContent = "Not Solved";
-		for(var b in buttons) {
-			buttons[b].style.backgroundColor = "#d6c755";
-			buttons[b].on = true;
+		for(b = 0; b < N*N; b++) {
+			buttons[b].style.backgroundColor = buttons[b].originalState[1];
+			buttons[b].on = buttons[b].originalState[0];
+			moves = 0;
+			document.getElementById("h3").textContent = "Moves: " + moves;
+		}
+	});
+
+	var newGame = document.getElementById("newgame");
+	newGame.addEventListener("click", function() {
+		document.getElementById("h2").textContent = "Not Solved";
+		for(b = 0; b < N*N; b++) {
+			buttons[b].on = Math.random() < 0.5 ? false : true;
+			buttons[b].style.backgroundColor = buttons[b].on ? lit : unlit;
+			buttons[b].originalState = [buttons[b].on, buttons[b].style.backgroundColor];
+			moves = 0;
+			document.getElementById("h3").textContent = "Moves: " + moves;
 		}
 	});
 
 	var buttons = document.getElementsByClassName("b");
-	for(var b in buttons) {
-		buttons[b].on = true;
-		buttons[b].num = b;
-		if(b) buttons[b].addEventListener("click", toggle);
-		
+	for(b = 0; b < N*N; b++) {
+		buttons[b].on = Math.random() < 0.5 ? false : true;
+		buttons[b].style.backgroundColor = buttons[b].on ? lit : unlit;
+		buttons[b].originalState = [buttons[b].on, buttons[b].style.backgroundColor];
 		buttons[b].column = b%N;
 
 		if(b < N) {
@@ -27,12 +43,14 @@ window.onload = function() {
 		} else if(2*N <= b && b < 3*N) {
 			buttons[b].row = 2;
 		}
+
+		buttons[b].addEventListener("click", toggle);
 	}
 
 	function toggle() {
 
 		//toggle self
-		this.style.backgroundColor = this.on == false ? "#d6c755" : "#545659";
+		this.style.backgroundColor = this.on ? unlit : lit;
 		this.on = this.on == false ? true : false;
 
 		//check which buttons are adjacent
@@ -45,6 +63,16 @@ window.onload = function() {
 				return false;
 			}
 		}
+		
+		//toggle adjacent buttons
+		for(b = 0; b < N*N; b++) {
+			if(isAdjacent(buttons[b], this)) {
+				buttons[b].style.backgroundColor = buttons[b].on ? unlit : lit;
+				buttons[b].on = buttons[b].on == false ? true : false;
+			}
+		}
+
+		document.getElementById("h3").textContent = "Moves: " + ++moves;
 
 		//check if all lights are off
 		function isSolved() {
@@ -54,14 +82,6 @@ window.onload = function() {
 				}
 			}
 			return true;
-		}
-		
-		//toggle adjacent buttons
-		for(var b in buttons) {
-			if(isAdjacent(buttons[b], this)) {
-				buttons[b].style.backgroundColor = buttons[b].on == false ? "#d6c755" : "#545659";
-				buttons[b].on = buttons[b].on == false ? true : false;
-			}
 		}
 
 		if(isSolved()) {

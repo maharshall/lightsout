@@ -2,7 +2,7 @@ h1 {
 	color: white;
 }
 
-h2 {
+h2, h3 {
 	color: white;
 }
 
@@ -22,8 +22,15 @@ body {
 	width: 400px;
 }
 
-.reset {
-	color: white;
-	background-color: grey;
-	margin: 700px;
+#reset {
+	padding: 7px;
+	border-radius: 10px;
+	margin-left: 7px;
+	margin-top: 7px;
+}
+
+#newgame {
+	padding: 7px;
+	border-radius: 10px;
+	margin-left: 10px;
 }
